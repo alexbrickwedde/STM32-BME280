@@ -19,7 +19,7 @@ int8_t BME280_user_i2c_read(uint8_t reg_addr, uint8_t *data, uint32_t len, void 
   return Result == HAL_OK ? BME280_INTF_RET_SUCCESS : BME280_E_COMM_FAIL;
 }
 
-int8_t BME280_user_i2c_write(uint8_t reg_addr, const uint8_t *data, uint32_t len, void *intf_ptr)
+int8_t BME280_user_i2c_write(uint8_t reg_addr, uint8_t *data, uint32_t len, void *intf_ptr)
 {
   struct identifier *pid = intf_ptr;
   HAL_StatusTypeDef Result = HAL_I2C_Mem_Write(pid->hi2c, pid->dev_addr << 1, reg_addr, I2C_MEMADD_SIZE_8BIT, data, len, 100);
@@ -28,12 +28,12 @@ int8_t BME280_user_i2c_write(uint8_t reg_addr, const uint8_t *data, uint32_t len
 
 void BME280_user_delay_us(uint32_t period, void *intf_ptr)
 {
-  struct identifier *pid = intf_ptr;
+//  struct identifier *pid = intf_ptr;
 //  delay_usec(pid->htim, period);
   HAL_Delay((period / 1000) + 1);
 }
 
-int8_t BME280_Init(uint8_t address, I2C_HandleTypeDef *hi2c, TIM_TypeDef *htim) {
+int8_t BME280_Init(uint8_t address, I2C_HandleTypeDef *hi2c, TIM_HandleTypeDef *htim) {
 
   id.hi2c = hi2c;
   id.dev_addr = BME280_I2C_ADDR_PRIM;
